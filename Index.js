@@ -33,7 +33,6 @@ function SearchPerson(id) {
 
 function SearchIdPost(iduser, idpost) {
 
-
     FB.api(iduser + '_' + idpost + '/comments', {
         fields: [],
         access_token: token
