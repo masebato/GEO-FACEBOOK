@@ -57,8 +57,18 @@ function SearchIdPost(iduser, idpost) {
 
 
 }
-
-
+/**
+ * 
+ * geojson podemos encontrar el mapa y como armar el json
+ * http://geojson.io/#map=9/4.3464/-74.4241
+ * 
+ * 
+ * esta es la api de google, la key
+ * API GOOGLE MAPS KEY = AIzaSyBqnJwmcKRZJzMmjss5b8AW6NCHi-66Lkw 
+ * 
+ * 
+ */
+ 
 
 SearchIdPost('10207581007947552', '10214909673039599');
 
