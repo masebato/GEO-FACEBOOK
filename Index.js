@@ -4,6 +4,10 @@ var http = require('http');
 var hostname = '127.0.0.1';
 var port = 3000;
 var FB = require('fb');
+var datosJson;
+var express = require('express');
+var app = express();
+
 
 var server = http.createServer(function (req, res) {
     res.statusCode = 200;
@@ -17,7 +21,7 @@ var server = http.createServer(function (req, res) {
 //#endregion
 //FB.options({: 'v2.11'});
 
-var token = 'EAACEdEose0cBAGmvvvshS7GcMe816US2agsd2p82VxwZAXHiERh8ZAzbUTKkvD6gYUMtZCZAfg8STQqZBcfKAYVSsivF5P1lyY5ZAOpZB60CLDauzIfLZCWUk8JhbZClHTTbZBET6yKXOdxAoVWYnvoxW5hwzFsgNMp1YxdMlBhMh0TVTKUOJnD21ncy09KmxyZBAAy6WxA0O6CtZBu8DeO8TuqK';
+var token = 'EAACEdEose0cBAJYlNbsAPF54yfpzbNVsyl4TojQI3DLaON7nrpwaGaT0zxuZBN03mfLn8YTfudd3pTsjQltXD9tt4yKNuCu1NJKuIS7F3oG4qpCZBW90GZAXMQHtVP6LeWWQYB3yDxXa5DQRujaSjHZBS7kZABdivhi5lHhWlwzkDsREmYFZBd6HOOoqIiSDYZD';
 
 
 function SearchPerson(id) {
@@ -42,12 +46,36 @@ function SearchIdPost(iduser, idpost) {
                 fields: ['location'],
                 access_token: token
             }, res3 => {
-
                 FB.api(res3.location.id, {
                     fields: [],
                     access_token: token
                 }, res4 => {
-                    console.log(res4);
+                   FB.api(res4.id, {
+                    fields: ['location'],
+                    access_token: token
+
+                   },  dataLocation => {
+                 var datos = {
+              "type" : "FeatureColletion",
+              "features":[
+                  {
+                      "type":"Feature",
+                      "properties":{},
+                      "geometry":{
+                          "type":"Point",
+                          "coordinates":[
+                              dataLocation.location.latitude,
+                              dataLocation.location.longitude
+                          ]
+                      }
+                  }
+              ]
+
+                 }
+                 datosJson=datos;
+                    console.log(datos);
+                    //console.log(dataLocation);                                
+                });
                 });
             });
         });
@@ -72,8 +100,11 @@ function SearchIdPost(iduser, idpost) {
 
 SearchIdPost('10207581007947552', '10214909673039599');
 
-
-server.listen(port, hostname, function () {
-    console.log('ready 8000');
-    //  console.log('Server running at http://${hostname}:${port}/');
+app.get('/datos', function(request,res){
+res.json(datosJson);
 });
+
+app.listen(3000,function(){
+    console.log('El servidor Esta En llamas!');
+  });
+ 
