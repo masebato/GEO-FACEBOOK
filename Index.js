@@ -1,14 +1,14 @@
-
 // #region CONSTANTES DE CONFIGURACIÒN 
 
 var http = require('http')
 var hostname = '127.0.0.1'
 var port = 3000
 var FB = require('fb')
-var datosJson
+var datosJson;
 var express = require('express')
 var app = express()
 
+var bodyParser = require('body-parser');
 var server = http.createServer(function (req, res) {
   res.statusCode = 200
 
@@ -16,21 +16,13 @@ var server = http.createServer(function (req, res) {
   res.end('hola mundo/n')
 })
 
+
 // #endregion
 // FB.options({: 'v2.11'})
 
-var token = 'EAACEdEose0cBAFhHlI27iQFdyLWt1RC3GBOdkls9h3aGXY5ysjx32OxmEePSZCxsEdjVtyfRAHhpKyhNVSleZC2AUC2IqNVcK19RsCWys1Q7mUMp5di1bNADMJGf6ugxj26RBZBWv55wtfJTu31mcLkYE0qqpJ0dLNC8mGZAZCL0esC9xid0LzaD7JQEnEOZALRDQZCZAR3AfhK5P3wJ1hKi'
+var token = 'EAACEdEose0cBAPXTjlRDabP6Ni5uQ4bMcZBKrVUW4Wl5tQl9PXsQ541fhSdAwTreyNqMsWRDTCic4kZCH0ymAxUFcVQkQ9ZBR2vGwE4db6uqhkchTnCGhfNTZBhc0MIyQn90OXxPmmkPAZC7RZBvKnOZAPWsVfk0iCGDcDWK9GDTStVSo3tMtbPCZC5AgZBFCIc0ZD'
 
-function SearchPerson (id) {
-  FB.api(id, {
-    fields: [],
-    access_token: token
-  }, function (res) {
-    console.log(res)
-  })
-}
-
-function SearchIdPost (iduser, idpost) {
+function SearchIdPost(iduser, idpost) {
   FB.api(iduser + '_' + idpost + '/comments', {
     fields: [],
     access_token: token
@@ -50,14 +42,14 @@ function SearchIdPost (iduser, idpost) {
 
           }, dataLocation => {
             var datos = {
-              
-              latitude: dataLocation.location.latitude,
-              longitude: dataLocation.location.longitude
+
+              lat: dataLocation.location.latitude,
+              lng: dataLocation.location.longitude
             }
-            datosJson = datos
+            datosJson = datos;
             JSON.stringify(datos);
-            console.log(datos)
-          // console.log(dataLocation);                                
+
+            // console.log(dataLocation);                                
           })
         })
       })
@@ -79,8 +71,13 @@ function SearchIdPost (iduser, idpost) {
 
 SearchIdPost('10207581007947552', '10214909673039599')
 
+app.get('/', function (request, res) {
+  res.sendFile(__dirname + '/index.html');
+})
+
+
 app.get('/datos', function (request, res) {
-  res.json(datosJson)
+  res.json(datosJson);
 })
 
 app.listen(3000, function () {
